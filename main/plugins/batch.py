@@ -238,23 +238,23 @@ async def r_batch(userbot, client, sender, countdown, link):
         timer = 30  # Increased default timer value
 
         if i < 25:
-            timer = 3
-        elif 250 <= i < 100:
-            timer = 4
-        elif 100 <= i < 1000:
             timer = 5
+        elif 250 <= i < 100:
+            timer = 10
+        elif 100 <= i < 1000:
+            timer = 10
         elif 1000 <= i < 5000:
-            timer = 6
+            timer = 10
         elif 5000 <= i < 10000:
-            timer = 7
+            timer = 10
         elif 10000 <= i < 20000:
-            timer = 8
+            timer = 10
         elif i >= 20000:
-            timer = 9  # Increased timer value for larger counts
+            timer = 60  # Increased timer value for larger counts
 
         # Adjust the timer for links other than channel links
         if 't.me/c/' not in link:
-            timer = 2 if i < 500 else 3  # Increased timer values for non-channel links
+            timer = 5 if i < 500 else 10  # Increased timer values for non-channel links
 
         try: 
             count_down = f"**Batch process ongoing.**\n\nProcess completed: {i+1}"
