@@ -198,8 +198,8 @@ async def _bulk(event):
             _range = await conv.get_reply()
             try:
                 value = int(_range.text)
-                if value > 1000000:
-                  return await conv.send_message("You can only get upto 100k files in a single batch...")
+                if value > 10000:
+                  return await conv.send_message("You can only get upto 10k files in a single batch...")
             except ValueError:
                 return await conv.send_message("**Range must be an integer!**")
 
