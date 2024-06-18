@@ -79,7 +79,7 @@ async def cancel_command(event):
             
         await event.respond("Operation canceled.")
     else:
-        await event.respond("**Cancel Successfully ✅**")
+        await event.respond("There is no operation to cancel.")
 
 
 # Define the log file path
@@ -173,7 +173,7 @@ async def send_log(event):
     # Check if the log file exists
     if os.path.exists(temp_log_file):
         # Send the log file as a document to the user
-        await gagan.send_file(user_id, temp_log_file, caption="**Here is the log file of last 2 min.**")
+        await gagan.send_file(user_id, temp_log_file, caption="Here is the log file of last 2 min.")
     else:
         await event.respond("Log file not found.")
 
@@ -183,7 +183,7 @@ async def _bulk(event):
     user_id = event.sender_id
   
     if user_id in batch_data:
-        return await event.reply("**You've already started one batch, wait for it to complete!**")
+        return await event.reply("You've already started one batch, wait for it to complete!")
 
     async with gagan.conversation(event.chat_id) as conv: 
         try:
@@ -192,16 +192,16 @@ async def _bulk(event):
             try:
                 _link = get_link(link.text)
             except Exception:
-                await conv.send_message("**No link found...**")
+                await conv.send_message("No link found...")
                 return
             await conv.send_message(f"Send me the number of files/range you want to save from the given message, as a reply to this message.", buttons=Button.force_reply())
             _range = await conv.get_reply()
             try:
                 value = int(_range.text)
-                if value > 10000:
-                  return await conv.send_message("You can only get upto 10k files in a single batch...")
+                if value > 1000:
+                  return await conv.send_message("You can only get upto 1000 files in a single batch...")
             except ValueError:
-                return await conv.send_message("**Range must be an integer!**")
+                return await conv.send_message("Range must be an integer!")
 
             ids_data[str(user_id)] = list(range(value))
             save_ids_data(ids_data)
@@ -215,12 +215,12 @@ async def _bulk(event):
             save_batch_data(batch_data)
 
             cd = await conv.send_message("**Batch process ongoing...**\n\nProcess completed: ", 
-                                    buttons=[[Button.url("Join Channel", url="http://t.me/official_satyam01")]])
+                                    buttons=[[Button.url("Join Channel", url="http://t.me/devggn")]])
             co = await r_batch(userbot, Bot, user_id, cd, _link) 
             try: 
                 if co == -2:
-                    await Bot.send_message(user_id, "**Batch successfully completed!**")
-                    await cd.edit(f"**Batch process ongoing.**\n\nProcess completed: {value} \n\n **Batch successfully completed!** ")
+                    await Bot.send_message(user_id, "Batch successfully completed!")
+                    await cd.edit(f"**Batch process ongoing.**\n\nProcess completed: {value} \n\n Batch successfully completed! ")
             except:
                 await Bot.send_message(user_id, "ERROR!\n\n maybe last msg didn't exist yet")
             finally:
@@ -238,17 +238,17 @@ async def r_batch(userbot, client, sender, countdown, link):
         timer = 30  # Increased default timer value
 
         if i < 25:
-            timer = 5
+            timer = 2
         elif 250 <= i < 100:
-            timer = 10
+            timer = 5
         elif 100 <= i < 1000:
-            timer = 10
+            timer = 8
         elif 1000 <= i < 5000:
-            timer = 10
+            timer = 11
         elif 5000 <= i < 10000:
-            timer = 10
+            timer = 15
         elif 10000 <= i < 20000:
-            timer = 10
+            timer = 45
         elif i >= 20000:
             timer = 60  # Increased timer value for larger counts
 
@@ -262,7 +262,7 @@ async def r_batch(userbot, client, sender, countdown, link):
             await get_bulk_msg(userbot, client, sender, link, integer)
             protection = await client.send_message(sender, f"Sleeping for `{timer}` seconds to avoid Floodwaits and Protect account!")
             await countdown.edit(count_down, 
-                                 buttons=[[Button.url("Join Channel", url="https://t.me/official_satyam01")]])
+                                 buttons=[[Button.url("Join Channel", url="https://t.me/devggn")]])
             await asyncio.sleep(timer)
             await protection.delete()
         except IndexError as ie:
@@ -284,13 +284,12 @@ async def r_batch(userbot, client, sender, countdown, link):
                 except Exception as e:
                     logger.info(e)
                     if countdown.text != count_down:
-                        await countdown.edit(count_down, buttons=[[Button.url("Join Channel", url="http://t.me/official_satyam01")]])
+                        await countdown.edit(count_down, buttons=[[Button.url("Join Channel", url="http://t.me/neetumamvol2")]])
         except Exception as e:
             #logger.info(e)
             #await client.send_message(sender, f"An error occurred during cloning, batch will continue.\n\n**Error:** {str(e)}")
             if countdown.text != count_down:
-                await countdown.edit(count_down, buttons=[[Button.url("Join Channel", url="https://t.me/official_satyam01")]])
+                await countdown.edit(count_down, buttons=[[Button.url("Join Channel", url="https://t.me/neetumamvol2")]])
         n = i + 1
         if n == len(ids_data[str(sender)]):
             return -2
-
